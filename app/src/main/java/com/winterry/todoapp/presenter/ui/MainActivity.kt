@@ -1,7 +1,8 @@
-package com.winterry.todoapp
+package com.winterry.todoapp.presenter.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.winterry.todoapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
