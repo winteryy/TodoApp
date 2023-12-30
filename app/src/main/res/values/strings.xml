@@ -2,7 +2,7 @@
     <string name="app_name">TodoApp</string>
     <string name="no_memo">할 일을 추가해보세요.</string>
     <string name="todo">TO-DO</string>
-    <string name="add_todo">할 일 추가</string>
+    <string name="add_todo">할 일</string>
     <string name="title">제목</string>
     <string name="content">내용</string>
     <string name="input_complete">입력 완료</string>

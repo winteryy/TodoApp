@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.winterry.todoapp.domain.model.Todo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/baseline_check_box_24"
                 android:padding="@dimen/padding"
-                android:visibility="invisible"
+                app:checkSet="@{item.isChecked}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -51,6 +53,7 @@
                 android:layout_marginEnd="@dimen/margin_small"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:text="@{item.title}"
                 tools:text="제목 쓰여지는 공간"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -66,6 +69,7 @@
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:maxLines="3"
                 android:ellipsize="end"
+                android:text="@{item.content}"
                 tools:text="내용 쓰여지는 공간"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
