@@ -21,6 +21,13 @@ class InputViewModel @Inject constructor(
 
     var title = MutableLiveData("")
     var content = MutableLiveData("")
+    private var item: Todo? = null
+
+    fun initData(item: Todo) {
+        this.item = item
+        title.value = item.title
+        content.value = item.content
+    }
 
     fun insertData() {
         val titleValue = title.value
@@ -33,7 +40,9 @@ class InputViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             useCase.create(
-                Todo(title = titleValue, content = contentValue)
+                item?.copy(
+                    title = titleValue, content = contentValue
+                ) ?: Todo(title = titleValue, content = contentValue)
             ).also {
                 _doneEvent.postValue(Pair(true, if(it) "완료" else "저장에 실패했습니다."))
             }

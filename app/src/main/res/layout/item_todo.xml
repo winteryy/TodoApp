@@ -7,12 +7,18 @@
         <variable
             name="item"
             type="com.winterry.todoapp.domain.model.Todo" />
+
+        <variable
+            name="handler"
+            type="com.winterry.todoapp.presenter.ui.MainActivity.Handler"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small">
+        android:padding="@dimen/padding_small"
+        android:onClick="@{() -> handler.onClickItem(item)}"
+        android:onLongClick="@{() -> handler.onLongClickItem(item)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/baseline_check_box_outline_blank_24"
                 android:padding="@dimen/padding"
+                android:onClick="@{() -> handler.onClickCheck(item)}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -35,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/baseline_check_box_24"
                 android:padding="@dimen/padding"
+                android:onClick="@{() -> handler.onClickCheck(item)}"
                 app:checkSet="@{item.isChecked}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

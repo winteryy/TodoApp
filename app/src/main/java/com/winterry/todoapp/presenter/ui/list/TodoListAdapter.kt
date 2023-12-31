@@ -6,16 +6,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.winterry.todoapp.databinding.ItemTodoBinding
 import com.winterry.todoapp.domain.model.Todo
+import com.winterry.todoapp.presenter.ui.MainActivity
 import com.winterry.todoapp.presenter.ui.list.viewholder.TodoViewHolder
 
-class TodoListAdapter : ListAdapter<Todo, TodoViewHolder>(diffCallback) {
+class TodoListAdapter(private val handler: MainActivity.Handler) :
+    ListAdapter<Todo, TodoViewHolder>(diffCallback) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         return TodoViewHolder(
             ItemTodoBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), handler
         )
     }
 
