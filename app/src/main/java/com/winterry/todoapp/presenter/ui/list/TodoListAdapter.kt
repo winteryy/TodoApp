@@ -35,7 +35,6 @@ class TodoListAdapter(private val handler: MainActivity.Handler) :
             override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 

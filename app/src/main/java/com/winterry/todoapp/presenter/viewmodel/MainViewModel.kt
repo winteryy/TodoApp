@@ -30,7 +30,7 @@ class MainViewModel @Inject constructor(
     fun deleteItem(item: Todo) {
         viewModelScope.launch {
             useCase.delete(item).also {
-                _doneEvent.postValue(Pair(it, "삭제 완료"))
+                _doneEvent.postValue(Pair(it , "삭제 완료"))
             }
         }
     }

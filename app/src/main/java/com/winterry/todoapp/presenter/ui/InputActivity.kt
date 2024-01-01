@@ -43,21 +43,24 @@ class InputActivity: AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.doneEvent.observe(this) {
             Toast.makeText(this, it.second, Toast.LENGTH_SHORT).show()
-            if(it.first) {
-                finish()
+
+            when(it.first) {
+                SUC_CREATE -> {
+                    setResult(RESULT_OK)
+                    finish()
+                }
+                SUC_UPDATE -> {
+                    finish()
+                }
+                else -> {}
             }
         }
     }
 
     companion object {
-        private const val ITEM = "item"
-
-        fun start(context: Context, item: Todo? = null) {
-            Intent(context, InputActivity::class.java).apply {
-                putExtra(ITEM, item)
-            }.run {
-                context.startActivity(this)
-            }
-        }
+        const val ITEM = "item"
+        const val FAIL = 0
+        const val SUC_CREATE = 1
+        const val SUC_UPDATE = 2
     }
 }

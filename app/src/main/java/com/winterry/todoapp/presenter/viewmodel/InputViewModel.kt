@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.winterry.todoapp.domain.model.Todo
 import com.winterry.todoapp.domain.usecase.TodoUseCase
+import com.winterry.todoapp.presenter.ui.InputActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,10 +15,10 @@ import javax.inject.Inject
 @HiltViewModel
 class InputViewModel @Inject constructor(
     private val useCase: TodoUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _doneEvent = MutableLiveData<Pair<Boolean, String>>()
-    val doneEvent: LiveData<Pair<Boolean, String>> = _doneEvent
+    private val _doneEvent = MutableLiveData<Pair<Int, String>>()
+    val doneEvent: LiveData<Pair<Int, String>> = _doneEvent
 
     var title = MutableLiveData("")
     var content = MutableLiveData("")
@@ -33,8 +34,8 @@ class InputViewModel @Inject constructor(
         val titleValue = title.value
         val contentValue = content.value
 
-        if(titleValue.isNullOrBlank() || contentValue.isNullOrBlank()) {
-            _doneEvent.value = Pair(false, "모든 항목을 입력해주세요.")
+        if (titleValue.isNullOrBlank() || contentValue.isNullOrBlank()) {
+            _doneEvent.value = Pair(InputActivity.FAIL, "모든 항목을 입력해주세요.")
             return
         }
 
@@ -44,7 +45,8 @@ class InputViewModel @Inject constructor(
                     title = titleValue, content = contentValue
                 ) ?: Todo(title = titleValue, content = contentValue)
             ).also {
-                _doneEvent.postValue(Pair(true, if(it) "완료" else "저장에 실패했습니다."))
+                _doneEvent.postValue(Pair(item?.let { InputActivity.SUC_UPDATE }
+                    ?: InputActivity.SUC_CREATE, if (it) "완료" else "저장에 실패했습니다."))
             }
         }
     }

@@ -1,9 +1,12 @@
 package com.winterry.todoapp.presenter.ui
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.os.Looper
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
@@ -25,6 +28,14 @@ class MainActivity : AppCompatActivity() {
     private val adapter by lazy { TodoListAdapter(Handler()) }
 
     private val viewModel: MainViewModel by viewModels()
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                android.os.Handler(Looper.getMainLooper())
+                    .postDelayed({ binding.mainRecyclerView.scrollToPosition(0) }, 200)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +60,29 @@ class MainActivity : AppCompatActivity() {
                     adapter.submitList(it)
                 }
         }
+
+        viewModel.doneEvent.observe(this) {
+            if (it.first) {
+                Toast.makeText(this, it.second, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    fun onClickAdd(){
-        InputActivity.start(this)
-        //todo 리사이클러뷰 상단이동 처리 binding.mainRecyclerView.scrollToPosition(0)
+    fun inputActivityStart(item: Todo? = null) {
+        Intent(this, InputActivity::class.java).apply {
+            putExtra(InputActivity.ITEM, item)
+        }.run {
+            startForResult.launch(this)
+        }
+    }
+
+    fun onClickAdd() {
+        inputActivityStart()
     }
 
     inner class Handler {
         fun onClickItem(item: Todo) {
-            InputActivity.start(this@MainActivity, item)
+            inputActivityStart(item)
         }
 
         fun onLongClickItem(item: Todo): Boolean {
